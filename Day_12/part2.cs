@@ -16,22 +16,37 @@ class AdventOfCode2021
   }
 
   static Dictionary<string, List<string>> map = new Dictionary<string, List<string>>();
+  //static List<string> visited = new List<string>();
   static List<string> v = new() { "start" };
   static int count = 0;
+
+  static List<string> currentPath = new() { "start"};
   static void VisitCaves(string top, List<string> visited, bool visitedASmallCaveTwice)
   {
     if (top == "end")
     {
+
+      foreach(var item in currentPath)
+      {
+        Console.Write($"{item} ");
+      }
+      Console.WriteLine();
+
       ++count;
       return;
     }
     foreach (string value in map[top])
     {
+      currentPath.Add(value);
+
       if (value.Any(a => char.IsLower(a)))
       {
 
         if (value == "start")
+        {
+          currentPath.RemoveAt(currentPath.Count - 1);
           continue;
+        }
 
         if (visitedASmallCaveTwice == false || !visited.Contains(value))
         {
@@ -53,6 +68,9 @@ class AdventOfCode2021
       {
         VisitCaves(value, visited, visitedASmallCaveTwice);
       }
+
+
+      currentPath.RemoveAt(currentPath.Count - 1);
     }
 
   }
